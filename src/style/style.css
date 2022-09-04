@@ -1,0 +1,191 @@
+.nav-link.active {
+  text-decoration: underline;
+  text-decoration-color: #5a6272;
+}
+.car .model,
+.car .brand {
+  display: block;
+  color: black;
+}
+.car .model {
+  font-weight: bold;
+}
+.car {
+  margin-left: 16px;
+}
+.title {
+  color: #fff !important;
+  font-size: 0.9rem !important;
+  font-weight: bolder;
+}
+
+.titleBlack {
+  color: #5a6272 !important;
+  font-size: 0.9rem !important;
+  font-weight: bolder;
+}
+body {
+  font-family: Roboto, system-ui, sans-serif !important;
+}
+.owl-dots span {
+  border-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+}
+.list-unstyled :hover {
+  color: #677386 !important;
+}
+
+.mySlides {
+  display: none;
+}
+img {
+  vertical-align: middle;
+}
+
+/* Slideshow container */
+.slideshow-container {
+  min-width: 290px;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 8px;
+  margin-top: -22px;
+  color: #5a6272;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Caption text */
+.text {
+  color: #5a6272;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #5a6272;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.activeSlide,
+.dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 10.5s;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev,
+  .next,
+  .text {
+    font-size: 11px;
+  }
+}
+.model,
+.brand {
+  color: black !important;
+  font-weight: 400;
+  margin-left: 16px;
+}
+.model {
+  font-weight: bold;
+}
+.btn-footer {
+  color: #60697b;
+}
+.btn-footer :hover {
+  color: white;
+}
+.btn-home :hover {
+  color: #60697b;
+}
+.btn-gen :hover {
+  color: #60697b !important;
+}
+.fade-in {
+  animation: fadeIn 4s;
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.3;
+    color: black !important;
+  }
+  to {
+    opacity: 1;
+    color: #5a6272 !important;
+  }
+}
+.msg_add_price_outTown {
+  font-weight: bolder !important;
+  font-size: 0.75rem;
+  color: #afb8ca;
+}
+.btn-hover:hover {
+  color: #5a6272;
+}
+.googlePlay {
+  margin-left: 14px;
+}
+
+.btn-nav_reserver :hover{
+  color: #fff !important;
+  background-color: rgba(96, 105, 123,.5);
+}
