@@ -107,7 +107,6 @@
     "./gatsby-config.ts",
     "./plugins/**/*",
     "webpack.config.js",
-    "gatsby-ssr.js",
     "static"
   ]
 }

@@ -47,7 +47,7 @@ export const DatasContextProvider: FC<{ children: ReactElement }> = ({
       localStorage.getItem('lang') ||
       navigator.language.slice(0, 2).toUpperCase()
   } else {
-    lang = navigator.language.slice(0, 2).toUpperCase()
+    lang = 'FR'
   }
   const [currentLanguage, UpdateLanguage] = useState<string>(lang)
   useEffect(() => {
