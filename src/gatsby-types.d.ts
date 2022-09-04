@@ -427,8 +427,6 @@ type File = Node & {
   readonly birthtime: Maybe<Scalars['Date']>;
   /** @deprecated Use `birthTime` instead */
   readonly birthtimeMs: Maybe<Scalars['Float']>;
-  readonly blksize: Maybe<Scalars['Int']>;
-  readonly blocks: Maybe<Scalars['Int']>;
   readonly changeTime: Scalars['Date'];
   /** Returns the first child node of type ImageSharp or null if there are no children of given type on this node */
   readonly childImageSharp: Maybe<ImageSharp>;
@@ -460,7 +458,6 @@ type File = Node & {
   readonly size: Scalars['Int'];
   readonly sourceInstanceName: Scalars['String'];
   readonly uid: Scalars['Int'];
-  readonly url: Maybe<Scalars['String']>;
 };
 
 
@@ -573,8 +570,6 @@ type FileFieldsEnum =
   | 'birthTime'
   | 'birthtime'
   | 'birthtimeMs'
-  | 'blksize'
-  | 'blocks'
   | 'changeTime'
   | 'childImageSharp.children'
   | 'childImageSharp.children.children'
@@ -837,8 +832,7 @@ type FileFieldsEnum =
   | 'root'
   | 'size'
   | 'sourceInstanceName'
-  | 'uid'
-  | 'url';
+  | 'uid';
 
 type FileFilterInput = {
   readonly absolutePath: InputMaybe<StringQueryOperatorInput>;
@@ -849,8 +843,6 @@ type FileFilterInput = {
   readonly birthTime: InputMaybe<DateQueryOperatorInput>;
   readonly birthtime: InputMaybe<DateQueryOperatorInput>;
   readonly birthtimeMs: InputMaybe<FloatQueryOperatorInput>;
-  readonly blksize: InputMaybe<IntQueryOperatorInput>;
-  readonly blocks: InputMaybe<IntQueryOperatorInput>;
   readonly changeTime: InputMaybe<DateQueryOperatorInput>;
   readonly childImageSharp: InputMaybe<ImageSharpFilterInput>;
   readonly children: InputMaybe<NodeFilterListInput>;
@@ -880,7 +872,6 @@ type FileFilterInput = {
   readonly size: InputMaybe<IntQueryOperatorInput>;
   readonly sourceInstanceName: InputMaybe<StringQueryOperatorInput>;
   readonly uid: InputMaybe<IntQueryOperatorInput>;
-  readonly url: InputMaybe<StringQueryOperatorInput>;
 };
 
 type FileGroupConnection = {
@@ -2039,8 +2030,6 @@ type Query_fileArgs = {
   birthTime: InputMaybe<DateQueryOperatorInput>;
   birthtime: InputMaybe<DateQueryOperatorInput>;
   birthtimeMs: InputMaybe<FloatQueryOperatorInput>;
-  blksize: InputMaybe<IntQueryOperatorInput>;
-  blocks: InputMaybe<IntQueryOperatorInput>;
   changeTime: InputMaybe<DateQueryOperatorInput>;
   childImageSharp: InputMaybe<ImageSharpFilterInput>;
   children: InputMaybe<NodeFilterListInput>;
@@ -2070,7 +2059,6 @@ type Query_fileArgs = {
   size: InputMaybe<IntQueryOperatorInput>;
   sourceInstanceName: InputMaybe<StringQueryOperatorInput>;
   uid: InputMaybe<IntQueryOperatorInput>;
-  url: InputMaybe<StringQueryOperatorInput>;
 };
 
 
@@ -2237,6 +2225,7 @@ type Query_strapiBwPageArgs = {
   id: InputMaybe<StringQueryOperatorInput>;
   internal: InputMaybe<InternalFilterInput>;
   locale: InputMaybe<StringQueryOperatorInput>;
+  localizations: InputMaybe<STRAPI_BW_PAGELocalizationsFilterInput>;
   parent: InputMaybe<NodeFilterInput>;
   publishedAt: InputMaybe<DateQueryOperatorInput>;
   strapi_id: InputMaybe<IntQueryOperatorInput>;
@@ -2257,7 +2246,6 @@ type Query_strapiMediaArgs = {
   height: InputMaybe<IntQueryOperatorInput>;
   id: InputMaybe<StringQueryOperatorInput>;
   internal: InputMaybe<InternalFilterInput>;
-  localFile: InputMaybe<FileFilterInput>;
   mime: InputMaybe<StringQueryOperatorInput>;
   name: InputMaybe<StringQueryOperatorInput>;
   parent: InputMaybe<NodeFilterInput>;
@@ -2482,6 +2470,8 @@ type STRAPI_BW_ASSETFieldsEnum =
   | 'bw_page.internal.owner'
   | 'bw_page.internal.type'
   | 'bw_page.locale'
+  | 'bw_page.localizations.data'
+  | 'bw_page.localizations.data.id'
   | 'bw_page.parent.children'
   | 'bw_page.parent.children.children'
   | 'bw_page.parent.children.id'
@@ -3535,6 +3525,8 @@ type STRAPI_BW_IMAGEFieldsEnum =
   | 'bw_page.internal.owner'
   | 'bw_page.internal.type'
   | 'bw_page.locale'
+  | 'bw_page.localizations.data'
+  | 'bw_page.localizations.data.id'
   | 'bw_page.parent.children'
   | 'bw_page.parent.children.children'
   | 'bw_page.parent.children.id'
@@ -3619,62 +3611,6 @@ type STRAPI_BW_IMAGEFieldsEnum =
   | 'car_image.internal.mediaType'
   | 'car_image.internal.owner'
   | 'car_image.internal.type'
-  | 'car_image.localFile.absolutePath'
-  | 'car_image.localFile.accessTime'
-  | 'car_image.localFile.atime'
-  | 'car_image.localFile.atimeMs'
-  | 'car_image.localFile.base'
-  | 'car_image.localFile.birthTime'
-  | 'car_image.localFile.birthtime'
-  | 'car_image.localFile.birthtimeMs'
-  | 'car_image.localFile.blksize'
-  | 'car_image.localFile.blocks'
-  | 'car_image.localFile.changeTime'
-  | 'car_image.localFile.childImageSharp.children'
-  | 'car_image.localFile.childImageSharp.gatsbyImageData'
-  | 'car_image.localFile.childImageSharp.id'
-  | 'car_image.localFile.children'
-  | 'car_image.localFile.childrenImageSharp'
-  | 'car_image.localFile.childrenImageSharp.children'
-  | 'car_image.localFile.childrenImageSharp.gatsbyImageData'
-  | 'car_image.localFile.childrenImageSharp.id'
-  | 'car_image.localFile.children.children'
-  | 'car_image.localFile.children.id'
-  | 'car_image.localFile.ctime'
-  | 'car_image.localFile.ctimeMs'
-  | 'car_image.localFile.dev'
-  | 'car_image.localFile.dir'
-  | 'car_image.localFile.ext'
-  | 'car_image.localFile.extension'
-  | 'car_image.localFile.gid'
-  | 'car_image.localFile.id'
-  | 'car_image.localFile.ino'
-  | 'car_image.localFile.internal.content'
-  | 'car_image.localFile.internal.contentDigest'
-  | 'car_image.localFile.internal.contentFilePath'
-  | 'car_image.localFile.internal.description'
-  | 'car_image.localFile.internal.fieldOwners'
-  | 'car_image.localFile.internal.ignoreType'
-  | 'car_image.localFile.internal.mediaType'
-  | 'car_image.localFile.internal.owner'
-  | 'car_image.localFile.internal.type'
-  | 'car_image.localFile.mode'
-  | 'car_image.localFile.modifiedTime'
-  | 'car_image.localFile.mtime'
-  | 'car_image.localFile.mtimeMs'
-  | 'car_image.localFile.name'
-  | 'car_image.localFile.nlink'
-  | 'car_image.localFile.parent.children'
-  | 'car_image.localFile.parent.id'
-  | 'car_image.localFile.prettySize'
-  | 'car_image.localFile.rdev'
-  | 'car_image.localFile.relativeDirectory'
-  | 'car_image.localFile.relativePath'
-  | 'car_image.localFile.root'
-  | 'car_image.localFile.size'
-  | 'car_image.localFile.sourceInstanceName'
-  | 'car_image.localFile.uid'
-  | 'car_image.localFile.url'
   | 'car_image.mime'
   | 'car_image.name'
   | 'car_image.parent.children'
@@ -3757,6 +3693,7 @@ type STRAPI_BW_IMAGEFieldsEnum =
   | 'localizations.data.attributes.brand'
   | 'localizations.data.attributes.color'
   | 'localizations.data.attributes.createdAt'
+  | 'localizations.data.attributes.key'
   | 'localizations.data.attributes.locale'
   | 'localizations.data.attributes.model'
   | 'localizations.data.attributes.price'
@@ -3888,6 +3825,7 @@ type STRAPI_BW_IMAGELocalizationsDataAttributes = {
   readonly brand: Maybe<Scalars['String']>;
   readonly color: Maybe<Scalars['String']>;
   readonly createdAt: Maybe<Scalars['Date']>;
+  readonly key: Maybe<Scalars['String']>;
   readonly locale: Maybe<Scalars['String']>;
   readonly model: Maybe<Scalars['String']>;
   readonly price: Maybe<Scalars['Int']>;
@@ -3923,6 +3861,7 @@ type STRAPI_BW_IMAGELocalizationsDataAttributesFilterInput = {
   readonly brand: InputMaybe<StringQueryOperatorInput>;
   readonly color: InputMaybe<StringQueryOperatorInput>;
   readonly createdAt: InputMaybe<DateQueryOperatorInput>;
+  readonly key: InputMaybe<StringQueryOperatorInput>;
   readonly locale: InputMaybe<StringQueryOperatorInput>;
   readonly model: InputMaybe<StringQueryOperatorInput>;
   readonly price: InputMaybe<IntQueryOperatorInput>;
@@ -3956,6 +3895,7 @@ type STRAPI_BW_PAGE = Node & {
   readonly id: Scalars['ID'];
   readonly internal: Internal;
   readonly locale: Maybe<Scalars['String']>;
+  readonly localizations: Maybe<STRAPI_BW_PAGELocalizations>;
   readonly parent: Maybe<Node>;
   readonly publishedAt: Maybe<Scalars['Date']>;
   readonly strapi_id: Maybe<Scalars['Int']>;
@@ -4073,6 +4013,7 @@ type STRAPI_BW_PAGEFieldsEnum =
   | 'bw_assets.bw_page.internal.owner'
   | 'bw_assets.bw_page.internal.type'
   | 'bw_assets.bw_page.locale'
+  | 'bw_assets.bw_page.localizations.data'
   | 'bw_assets.bw_page.parent.children'
   | 'bw_assets.bw_page.parent.id'
   | 'bw_assets.bw_page.publishedAt'
@@ -4248,6 +4189,7 @@ type STRAPI_BW_PAGEFieldsEnum =
   | 'bw_images.bw_page.internal.owner'
   | 'bw_images.bw_page.internal.type'
   | 'bw_images.bw_page.locale'
+  | 'bw_images.bw_page.localizations.data'
   | 'bw_images.bw_page.parent.children'
   | 'bw_images.bw_page.parent.id'
   | 'bw_images.bw_page.publishedAt'
@@ -4274,43 +4216,6 @@ type STRAPI_BW_PAGEFieldsEnum =
   | 'bw_images.car_image.internal.mediaType'
   | 'bw_images.car_image.internal.owner'
   | 'bw_images.car_image.internal.type'
-  | 'bw_images.car_image.localFile.absolutePath'
-  | 'bw_images.car_image.localFile.accessTime'
-  | 'bw_images.car_image.localFile.atime'
-  | 'bw_images.car_image.localFile.atimeMs'
-  | 'bw_images.car_image.localFile.base'
-  | 'bw_images.car_image.localFile.birthTime'
-  | 'bw_images.car_image.localFile.birthtime'
-  | 'bw_images.car_image.localFile.birthtimeMs'
-  | 'bw_images.car_image.localFile.blksize'
-  | 'bw_images.car_image.localFile.blocks'
-  | 'bw_images.car_image.localFile.changeTime'
-  | 'bw_images.car_image.localFile.children'
-  | 'bw_images.car_image.localFile.childrenImageSharp'
-  | 'bw_images.car_image.localFile.ctime'
-  | 'bw_images.car_image.localFile.ctimeMs'
-  | 'bw_images.car_image.localFile.dev'
-  | 'bw_images.car_image.localFile.dir'
-  | 'bw_images.car_image.localFile.ext'
-  | 'bw_images.car_image.localFile.extension'
-  | 'bw_images.car_image.localFile.gid'
-  | 'bw_images.car_image.localFile.id'
-  | 'bw_images.car_image.localFile.ino'
-  | 'bw_images.car_image.localFile.mode'
-  | 'bw_images.car_image.localFile.modifiedTime'
-  | 'bw_images.car_image.localFile.mtime'
-  | 'bw_images.car_image.localFile.mtimeMs'
-  | 'bw_images.car_image.localFile.name'
-  | 'bw_images.car_image.localFile.nlink'
-  | 'bw_images.car_image.localFile.prettySize'
-  | 'bw_images.car_image.localFile.rdev'
-  | 'bw_images.car_image.localFile.relativeDirectory'
-  | 'bw_images.car_image.localFile.relativePath'
-  | 'bw_images.car_image.localFile.root'
-  | 'bw_images.car_image.localFile.size'
-  | 'bw_images.car_image.localFile.sourceInstanceName'
-  | 'bw_images.car_image.localFile.uid'
-  | 'bw_images.car_image.localFile.url'
   | 'bw_images.car_image.mime'
   | 'bw_images.car_image.name'
   | 'bw_images.car_image.parent.children'
@@ -4426,6 +4331,14 @@ type STRAPI_BW_PAGEFieldsEnum =
   | 'internal.owner'
   | 'internal.type'
   | 'locale'
+  | 'localizations.data'
+  | 'localizations.data.attributes.createdAt'
+  | 'localizations.data.attributes.locale'
+  | 'localizations.data.attributes.publishedAt'
+  | 'localizations.data.attributes.tite'
+  | 'localizations.data.attributes.updatedAt'
+  | 'localizations.data.attributes.uri'
+  | 'localizations.data.id'
   | 'parent.children'
   | 'parent.children.children'
   | 'parent.children.children.children'
@@ -4481,6 +4394,7 @@ type STRAPI_BW_PAGEFilterInput = {
   readonly id: InputMaybe<StringQueryOperatorInput>;
   readonly internal: InputMaybe<InternalFilterInput>;
   readonly locale: InputMaybe<StringQueryOperatorInput>;
+  readonly localizations: InputMaybe<STRAPI_BW_PAGELocalizationsFilterInput>;
   readonly parent: InputMaybe<NodeFilterInput>;
   readonly publishedAt: InputMaybe<DateQueryOperatorInput>;
   readonly strapi_id: InputMaybe<IntQueryOperatorInput>;
@@ -4530,6 +4444,70 @@ type STRAPI_BW_PAGEGroupConnection_sumArgs = {
   field: STRAPI_BW_PAGEFieldsEnum;
 };
 
+type STRAPI_BW_PAGELocalizations = {
+  readonly data: Maybe<ReadonlyArray<Maybe<STRAPI_BW_PAGELocalizationsData>>>;
+};
+
+type STRAPI_BW_PAGELocalizationsData = {
+  readonly attributes: Maybe<STRAPI_BW_PAGELocalizationsDataAttributes>;
+  readonly id: Maybe<Scalars['Int']>;
+};
+
+type STRAPI_BW_PAGELocalizationsDataAttributes = {
+  readonly createdAt: Maybe<Scalars['Date']>;
+  readonly locale: Maybe<Scalars['String']>;
+  readonly publishedAt: Maybe<Scalars['Date']>;
+  readonly tite: Maybe<Scalars['String']>;
+  readonly updatedAt: Maybe<Scalars['Date']>;
+  readonly uri: Maybe<Scalars['String']>;
+};
+
+
+type STRAPI_BW_PAGELocalizationsDataAttributes_createdAtArgs = {
+  difference: InputMaybe<Scalars['String']>;
+  formatString: InputMaybe<Scalars['String']>;
+  fromNow: InputMaybe<Scalars['Boolean']>;
+  locale: InputMaybe<Scalars['String']>;
+};
+
+
+type STRAPI_BW_PAGELocalizationsDataAttributes_publishedAtArgs = {
+  difference: InputMaybe<Scalars['String']>;
+  formatString: InputMaybe<Scalars['String']>;
+  fromNow: InputMaybe<Scalars['Boolean']>;
+  locale: InputMaybe<Scalars['String']>;
+};
+
+
+type STRAPI_BW_PAGELocalizationsDataAttributes_updatedAtArgs = {
+  difference: InputMaybe<Scalars['String']>;
+  formatString: InputMaybe<Scalars['String']>;
+  fromNow: InputMaybe<Scalars['Boolean']>;
+  locale: InputMaybe<Scalars['String']>;
+};
+
+type STRAPI_BW_PAGELocalizationsDataAttributesFilterInput = {
+  readonly createdAt: InputMaybe<DateQueryOperatorInput>;
+  readonly locale: InputMaybe<StringQueryOperatorInput>;
+  readonly publishedAt: InputMaybe<DateQueryOperatorInput>;
+  readonly tite: InputMaybe<StringQueryOperatorInput>;
+  readonly updatedAt: InputMaybe<DateQueryOperatorInput>;
+  readonly uri: InputMaybe<StringQueryOperatorInput>;
+};
+
+type STRAPI_BW_PAGELocalizationsDataFilterInput = {
+  readonly attributes: InputMaybe<STRAPI_BW_PAGELocalizationsDataAttributesFilterInput>;
+  readonly id: InputMaybe<IntQueryOperatorInput>;
+};
+
+type STRAPI_BW_PAGELocalizationsDataFilterListInput = {
+  readonly elemMatch: InputMaybe<STRAPI_BW_PAGELocalizationsDataFilterInput>;
+};
+
+type STRAPI_BW_PAGELocalizationsFilterInput = {
+  readonly data: InputMaybe<STRAPI_BW_PAGELocalizationsDataFilterListInput>;
+};
+
 type STRAPI_BW_PAGESortInput = {
   readonly fields: InputMaybe<ReadonlyArray<InputMaybe<STRAPI_BW_PAGEFieldsEnum>>>;
   readonly order: InputMaybe<ReadonlyArray<InputMaybe<SortOrderEnum>>>;
@@ -4546,7 +4524,6 @@ type STRAPI__MEDIA = Node & {
   readonly height: Maybe<Scalars['Int']>;
   readonly id: Scalars['ID'];
   readonly internal: Internal;
-  readonly localFile: Maybe<File>;
   readonly mime: Maybe<Scalars['String']>;
   readonly name: Maybe<Scalars['String']>;
   readonly parent: Maybe<Node>;
@@ -4709,176 +4686,6 @@ type STRAPI__MEDIAFieldsEnum =
   | 'internal.mediaType'
   | 'internal.owner'
   | 'internal.type'
-  | 'localFile.absolutePath'
-  | 'localFile.accessTime'
-  | 'localFile.atime'
-  | 'localFile.atimeMs'
-  | 'localFile.base'
-  | 'localFile.birthTime'
-  | 'localFile.birthtime'
-  | 'localFile.birthtimeMs'
-  | 'localFile.blksize'
-  | 'localFile.blocks'
-  | 'localFile.changeTime'
-  | 'localFile.childImageSharp.children'
-  | 'localFile.childImageSharp.children.children'
-  | 'localFile.childImageSharp.children.id'
-  | 'localFile.childImageSharp.fixed.aspectRatio'
-  | 'localFile.childImageSharp.fixed.base64'
-  | 'localFile.childImageSharp.fixed.height'
-  | 'localFile.childImageSharp.fixed.originalName'
-  | 'localFile.childImageSharp.fixed.src'
-  | 'localFile.childImageSharp.fixed.srcSet'
-  | 'localFile.childImageSharp.fixed.srcSetWebp'
-  | 'localFile.childImageSharp.fixed.srcWebp'
-  | 'localFile.childImageSharp.fixed.tracedSVG'
-  | 'localFile.childImageSharp.fixed.width'
-  | 'localFile.childImageSharp.fluid.aspectRatio'
-  | 'localFile.childImageSharp.fluid.base64'
-  | 'localFile.childImageSharp.fluid.originalImg'
-  | 'localFile.childImageSharp.fluid.originalName'
-  | 'localFile.childImageSharp.fluid.presentationHeight'
-  | 'localFile.childImageSharp.fluid.presentationWidth'
-  | 'localFile.childImageSharp.fluid.sizes'
-  | 'localFile.childImageSharp.fluid.src'
-  | 'localFile.childImageSharp.fluid.srcSet'
-  | 'localFile.childImageSharp.fluid.srcSetWebp'
-  | 'localFile.childImageSharp.fluid.srcWebp'
-  | 'localFile.childImageSharp.fluid.tracedSVG'
-  | 'localFile.childImageSharp.gatsbyImageData'
-  | 'localFile.childImageSharp.id'
-  | 'localFile.childImageSharp.internal.content'
-  | 'localFile.childImageSharp.internal.contentDigest'
-  | 'localFile.childImageSharp.internal.contentFilePath'
-  | 'localFile.childImageSharp.internal.description'
-  | 'localFile.childImageSharp.internal.fieldOwners'
-  | 'localFile.childImageSharp.internal.ignoreType'
-  | 'localFile.childImageSharp.internal.mediaType'
-  | 'localFile.childImageSharp.internal.owner'
-  | 'localFile.childImageSharp.internal.type'
-  | 'localFile.childImageSharp.original.height'
-  | 'localFile.childImageSharp.original.src'
-  | 'localFile.childImageSharp.original.width'
-  | 'localFile.childImageSharp.parent.children'
-  | 'localFile.childImageSharp.parent.id'
-  | 'localFile.childImageSharp.resize.aspectRatio'
-  | 'localFile.childImageSharp.resize.height'
-  | 'localFile.childImageSharp.resize.originalName'
-  | 'localFile.childImageSharp.resize.src'
-  | 'localFile.childImageSharp.resize.tracedSVG'
-  | 'localFile.childImageSharp.resize.width'
-  | 'localFile.children'
-  | 'localFile.childrenImageSharp'
-  | 'localFile.childrenImageSharp.children'
-  | 'localFile.childrenImageSharp.children.children'
-  | 'localFile.childrenImageSharp.children.id'
-  | 'localFile.childrenImageSharp.fixed.aspectRatio'
-  | 'localFile.childrenImageSharp.fixed.base64'
-  | 'localFile.childrenImageSharp.fixed.height'
-  | 'localFile.childrenImageSharp.fixed.originalName'
-  | 'localFile.childrenImageSharp.fixed.src'
-  | 'localFile.childrenImageSharp.fixed.srcSet'
-  | 'localFile.childrenImageSharp.fixed.srcSetWebp'
-  | 'localFile.childrenImageSharp.fixed.srcWebp'
-  | 'localFile.childrenImageSharp.fixed.tracedSVG'
-  | 'localFile.childrenImageSharp.fixed.width'
-  | 'localFile.childrenImageSharp.fluid.aspectRatio'
-  | 'localFile.childrenImageSharp.fluid.base64'
-  | 'localFile.childrenImageSharp.fluid.originalImg'
-  | 'localFile.childrenImageSharp.fluid.originalName'
-  | 'localFile.childrenImageSharp.fluid.presentationHeight'
-  | 'localFile.childrenImageSharp.fluid.presentationWidth'
-  | 'localFile.childrenImageSharp.fluid.sizes'
-  | 'localFile.childrenImageSharp.fluid.src'
-  | 'localFile.childrenImageSharp.fluid.srcSet'
-  | 'localFile.childrenImageSharp.fluid.srcSetWebp'
-  | 'localFile.childrenImageSharp.fluid.srcWebp'
-  | 'localFile.childrenImageSharp.fluid.tracedSVG'
-  | 'localFile.childrenImageSharp.gatsbyImageData'
-  | 'localFile.childrenImageSharp.id'
-  | 'localFile.childrenImageSharp.internal.content'
-  | 'localFile.childrenImageSharp.internal.contentDigest'
-  | 'localFile.childrenImageSharp.internal.contentFilePath'
-  | 'localFile.childrenImageSharp.internal.description'
-  | 'localFile.childrenImageSharp.internal.fieldOwners'
-  | 'localFile.childrenImageSharp.internal.ignoreType'
-  | 'localFile.childrenImageSharp.internal.mediaType'
-  | 'localFile.childrenImageSharp.internal.owner'
-  | 'localFile.childrenImageSharp.internal.type'
-  | 'localFile.childrenImageSharp.original.height'
-  | 'localFile.childrenImageSharp.original.src'
-  | 'localFile.childrenImageSharp.original.width'
-  | 'localFile.childrenImageSharp.parent.children'
-  | 'localFile.childrenImageSharp.parent.id'
-  | 'localFile.childrenImageSharp.resize.aspectRatio'
-  | 'localFile.childrenImageSharp.resize.height'
-  | 'localFile.childrenImageSharp.resize.originalName'
-  | 'localFile.childrenImageSharp.resize.src'
-  | 'localFile.childrenImageSharp.resize.tracedSVG'
-  | 'localFile.childrenImageSharp.resize.width'
-  | 'localFile.children.children'
-  | 'localFile.children.children.children'
-  | 'localFile.children.children.id'
-  | 'localFile.children.id'
-  | 'localFile.children.internal.content'
-  | 'localFile.children.internal.contentDigest'
-  | 'localFile.children.internal.contentFilePath'
-  | 'localFile.children.internal.description'
-  | 'localFile.children.internal.fieldOwners'
-  | 'localFile.children.internal.ignoreType'
-  | 'localFile.children.internal.mediaType'
-  | 'localFile.children.internal.owner'
-  | 'localFile.children.internal.type'
-  | 'localFile.children.parent.children'
-  | 'localFile.children.parent.id'
-  | 'localFile.ctime'
-  | 'localFile.ctimeMs'
-  | 'localFile.dev'
-  | 'localFile.dir'
-  | 'localFile.ext'
-  | 'localFile.extension'
-  | 'localFile.gid'
-  | 'localFile.id'
-  | 'localFile.ino'
-  | 'localFile.internal.content'
-  | 'localFile.internal.contentDigest'
-  | 'localFile.internal.contentFilePath'
-  | 'localFile.internal.description'
-  | 'localFile.internal.fieldOwners'
-  | 'localFile.internal.ignoreType'
-  | 'localFile.internal.mediaType'
-  | 'localFile.internal.owner'
-  | 'localFile.internal.type'
-  | 'localFile.mode'
-  | 'localFile.modifiedTime'
-  | 'localFile.mtime'
-  | 'localFile.mtimeMs'
-  | 'localFile.name'
-  | 'localFile.nlink'
-  | 'localFile.parent.children'
-  | 'localFile.parent.children.children'
-  | 'localFile.parent.children.id'
-  | 'localFile.parent.id'
-  | 'localFile.parent.internal.content'
-  | 'localFile.parent.internal.contentDigest'
-  | 'localFile.parent.internal.contentFilePath'
-  | 'localFile.parent.internal.description'
-  | 'localFile.parent.internal.fieldOwners'
-  | 'localFile.parent.internal.ignoreType'
-  | 'localFile.parent.internal.mediaType'
-  | 'localFile.parent.internal.owner'
-  | 'localFile.parent.internal.type'
-  | 'localFile.parent.parent.children'
-  | 'localFile.parent.parent.id'
-  | 'localFile.prettySize'
-  | 'localFile.rdev'
-  | 'localFile.relativeDirectory'
-  | 'localFile.relativePath'
-  | 'localFile.root'
-  | 'localFile.size'
-  | 'localFile.sourceInstanceName'
-  | 'localFile.uid'
-  | 'localFile.url'
   | 'mime'
   | 'name'
   | 'parent.children'
@@ -4939,7 +4746,6 @@ type STRAPI__MEDIAFilterInput = {
   readonly height: InputMaybe<IntQueryOperatorInput>;
   readonly id: InputMaybe<StringQueryOperatorInput>;
   readonly internal: InputMaybe<InternalFilterInput>;
-  readonly localFile: InputMaybe<FileFilterInput>;
   readonly mime: InputMaybe<StringQueryOperatorInput>;
   readonly name: InputMaybe<StringQueryOperatorInput>;
   readonly parent: InputMaybe<NodeFilterInput>;
