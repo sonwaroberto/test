@@ -41,14 +41,19 @@ export const DatasContextProvider: FC<{ children: ReactElement }> = ({
   children: ReactElement
 }) => {
   const [datas, setDatas] = useState<Array<data>>([])
-  const [currentLanguage, UpdateLanguage] = useState<string>(
-    localStorage.getItem('defaultLanguage') ||
+  let lang: string
+  if (typeof window !== 'undefined') {
+    lang =
+      localStorage.getItem('lang') ||
       navigator.language.slice(0, 2).toUpperCase()
-  )
+  } else {
+    lang = navigator.language.slice(0, 2).toUpperCase()
+  }
+  const [currentLanguage, UpdateLanguage] = useState<string>(lang)
   useEffect(() => {
     let defaultLanguage = localStorage.getItem('defaultLanguage')
     if (!defaultLanguage) {
-      const navigatorLanguage =  navigator.language.slice(0, 2).toUpperCase()
+      const navigatorLanguage = navigator.language.slice(0, 2).toUpperCase()
       localStorage.setItem('defaultLanguage', navigatorLanguage)
       defaultLanguage = navigatorLanguage
     }
