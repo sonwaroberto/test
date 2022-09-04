@@ -43,7 +43,7 @@ interface car {
     ]
   }
   car_image: {
-    url:string
+    url: string
   }
   key: string
 }
@@ -59,10 +59,13 @@ export default function EstimationCar() {
   const [dayTown, setDayTown] = useState<number>(1)
   const [dayOutTown, setDayOutTown] = useState<number>(1)
   const [slideIndex, setSlideIndex] = useState<number>(1)
-  let slides = document.getElementsByClassName(
-    'mySlides'
-  ) as unknown as HTMLElement[]
-  let dots = document.getElementsByClassName('dot') as unknown as HTMLElement[]
+  let slides: string | any[], dots: string | any[]
+  if (typeof window !== 'undefined') {
+    slides = document.getElementsByClassName(
+      'mySlides'
+    ) as unknown as HTMLElement[]
+    dots = document.getElementsByClassName('dot') as unknown as HTMLElement[]
+  }
   const [check, setCheck] = useState<number>(1)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
