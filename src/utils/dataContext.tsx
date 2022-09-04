@@ -42,7 +42,7 @@ export const DatasContextProvider: FC<{ children: ReactElement }> = ({
 }) => {
   const [datas, setDatas] = useState<Array<data>>([])
   let lang: string
-  if (typeof window !== 'undefined') {
+  if (typeof window !== `undefined`) {
     lang =
       localStorage.getItem('lang') ||
       navigator.language.slice(0, 2).toUpperCase()

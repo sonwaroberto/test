@@ -37,8 +37,9 @@ const queryAsset = graphql`
   }
 `
 const Layout = ({ children }: { children: ReactElement }) => {
-  document.body.setAttribute('data-bs-spy', 'scroll')
-
+  if (typeof window !== 'undefined') {
+    document.body.setAttribute('data-bs-spy', 'scroll')
+  }
   const [jqueyLoaded, setJqueryLoaded] = useState(false)
   const [pluginLoaded, setPluginLoaded] = useState(false)
 
