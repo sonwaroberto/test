@@ -1,0 +1,109 @@
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFixed on ImageSharpFixed {
+  base64
+  width
+  height
+  src
+  srcSet
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFixed_tracedSVG on ImageSharpFixed {
+  tracedSVG
+  width
+  height
+  src
+  srcSet
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFixed_withWebp on ImageSharpFixed {
+  base64
+  width
+  height
+  src
+  srcSet
+  srcWebp
+  srcSetWebp
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFixed_withWebp_tracedSVG on ImageSharpFixed {
+  tracedSVG
+  width
+  height
+  src
+  srcSet
+  srcWebp
+  srcSetWebp
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFixed_noBase64 on ImageSharpFixed {
+  width
+  height
+  src
+  srcSet
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFixed_withWebp_noBase64 on ImageSharpFixed {
+  width
+  height
+  src
+  srcSet
+  srcWebp
+  srcSetWebp
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFluid on ImageSharpFluid {
+  base64
+  aspectRatio
+  src
+  srcSet
+  sizes
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFluidLimitPresentationSize on ImageSharpFluid {
+  maxHeight: presentationHeight
+  maxWidth: presentationWidth
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFluid_tracedSVG on ImageSharpFluid {
+  tracedSVG
+  aspectRatio
+  src
+  srcSet
+  sizes
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFluid_withWebp on ImageSharpFluid {
+  base64
+  aspectRatio
+  src
+  srcSet
+  srcWebp
+  srcSetWebp
+  sizes
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFluid_withWebp_tracedSVG on ImageSharpFluid {
+  tracedSVG
+  aspectRatio
+  src
+  srcSet
+  srcWebp
+  srcSetWebp
+  sizes
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFluid_noBase64 on ImageSharpFluid {
+  aspectRatio
+  src
+  srcSet
+  sizes
+}
+# /home/sonwa/black-walker/landing-page/www/node_modules/gatsby-transformer-sharp/src/fragments.js
+fragment GatsbyImageSharpFluid_withWebp_noBase64 on ImageSharpFluid {
+  aspectRatio
+  src
+  srcSet
+  srcWebp
+  srcSetWebp
+  sizes
+}
