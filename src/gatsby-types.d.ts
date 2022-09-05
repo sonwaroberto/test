@@ -6431,7 +6431,7 @@ type GatsbyImageSharpFluidLimitPresentationSizeFragment = { readonly maxHeight: 
 type imagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type imagesQuery = { readonly allStrapiBwImage: { readonly nodes: ReadonlyArray<{ readonly model: string | null, readonly price: number | null, readonly id: string, readonly color: string | null, readonly brand: string | null, readonly key: string | null, readonly localizations: { readonly data: ReadonlyArray<{ readonly attributes: { readonly color: string | null } | null } | null> | null } | null, readonly car_image: { readonly url: string | null } | null }> } };
+type imagesQuery = { readonly allStrapiBwImage: { readonly nodes: ReadonlyArray<{ readonly model: string | null, readonly price: number | null, readonly id: string, readonly color: string | null, readonly brand: string | null, readonly key: string | null, readonly localizations: { readonly data: ReadonlyArray<{ readonly attributes: { readonly color: string | null } | null } | null> | null } | null, readonly car_image: { readonly localFile: { readonly url: string | null } | null } | null }> } };
 
 
 }

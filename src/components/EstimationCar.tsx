@@ -20,7 +20,9 @@ const queryAsset = graphql`
           }
         }
         car_image {
-          url
+          localFile {
+            url
+          }
         }
         key
       }
@@ -43,7 +45,9 @@ interface car {
     ]
   }
   car_image: {
-    url: string
+    localFile: {
+      url: string
+    }
   }
   key: string
 }
@@ -51,6 +55,7 @@ interface car {
 export default function EstimationCar() {
   const staticQuery = useStaticQuery(queryAsset)
   const cars = staticQuery.allStrapiBwImage.nodes
+  console.log(cars)
   const { findElementByKey } = useThemeContext()
   const [selectedCar, setSelectedCar] = useState('prado-car')
   const [totalPrice, setTotalPrice] = useState<number>(50000)
@@ -166,6 +171,9 @@ export default function EstimationCar() {
   useEffect(() => {
     setNumberDays(dayOutTown + dayTown)
   }, [dayOutTown, dayTown])
+  useEffect(() => {
+    setNumberDays(1)
+  }, [])
   useEffect(() => {
     if (numberDays > 30) {
       setNumberDays(30)
@@ -442,7 +450,7 @@ export default function EstimationCar() {
                         className="rounded d-block w-100"
                         style={{ width: '100%' }}
                         alt="Image car"
-                        src={car.car_image.url}
+                        src={car.car_image.localFile.url}
                       />
                       <div className="d-flex align-items-center">
                         <img

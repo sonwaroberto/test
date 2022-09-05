@@ -43,7 +43,7 @@ img {
 
 /* Slideshow container */
 .slideshow-container {
-  min-width: 290px;
+  max-width: 400px;
   position: relative;
   margin: auto;
 }
