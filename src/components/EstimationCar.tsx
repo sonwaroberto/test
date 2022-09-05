@@ -176,7 +176,7 @@ export default function EstimationCar() {
   useEffect(() => {
     setNumberDays(dayOutTown + dayTown)
   }, [dayOutTown, dayTown])
-  useLayoutEffect(() => {
+  useEffect(() => {
     setNumberDays(1)
   }, [])
   useEffect(() => {
