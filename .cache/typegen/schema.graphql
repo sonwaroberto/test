@@ -446,6 +446,8 @@ type File implements Node {
   ): Date!
   birthtime: Date @deprecated(reason: "Use `birthTime` instead")
   birthtimeMs: Float @deprecated(reason: "Use `birthTime` instead")
+  blksize: Int
+  blocks: Int
   changeTime(
     # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
     difference: String
@@ -527,6 +529,7 @@ type File implements Node {
   size: Int!
   sourceInstanceName: String!
   uid: Int!
+  url: String
 }
 
 type FileConnection {
@@ -556,6 +559,8 @@ enum FileFieldsEnum {
   birthTime
   birthtime
   birthtimeMs
+  blksize
+  blocks
   changeTime
   childImageSharp___children
   childImageSharp___children___children
@@ -819,6 +824,7 @@ enum FileFieldsEnum {
   size
   sourceInstanceName
   uid
+  url
 }
 
 input FileFilterInput {
@@ -830,6 +836,8 @@ input FileFilterInput {
   birthTime: DateQueryOperatorInput
   birthtime: DateQueryOperatorInput
   birthtimeMs: FloatQueryOperatorInput
+  blksize: IntQueryOperatorInput
+  blocks: IntQueryOperatorInput
   changeTime: DateQueryOperatorInput
   childImageSharp: ImageSharpFilterInput
   children: NodeFilterListInput
@@ -859,6 +867,7 @@ input FileFilterInput {
   size: IntQueryOperatorInput
   sourceInstanceName: StringQueryOperatorInput
   uid: IntQueryOperatorInput
+  url: StringQueryOperatorInput
 }
 
 type FileGroupConnection {
@@ -1704,7 +1713,7 @@ type Query {
   allStrapiBwPage(filter: STRAPI_BW_PAGEFilterInput, limit: Int, skip: Int, sort: STRAPI_BW_PAGESortInput): STRAPI_BW_PAGEConnection!
   allStrapiMedia(filter: STRAPI__MEDIAFilterInput, limit: Int, skip: Int, sort: STRAPI__MEDIASortInput): STRAPI__MEDIAConnection!
   directory(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, changeTime: DateQueryOperatorInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): Directory
-  file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, changeTime: DateQueryOperatorInput, childImageSharp: ImageSharpFilterInput, children: NodeFilterListInput, childrenImageSharp: ImageSharpFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): File
+  file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, childImageSharp: ImageSharpFilterInput, children: NodeFilterListInput, childrenImageSharp: ImageSharpFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput, url: StringQueryOperatorInput): File
   imageSharp(children: NodeFilterListInput, fixed: ImageSharpFixedFilterInput, fluid: ImageSharpFluidFilterInput, gatsbyImageData: GatsbyImageDataQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, original: ImageSharpOriginalFilterInput, parent: NodeFilterInput, resize: ImageSharpResizeFilterInput): ImageSharp
   markdownRemark(children: NodeFilterListInput, excerpt: StringQueryOperatorInput, excerptAst: JSONQueryOperatorInput, frontmatter: MarkdownRemarkFrontmatterFilterInput, headings: MarkdownHeadingFilterListInput, html: StringQueryOperatorInput, htmlAst: JSONQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, rawMarkdownBody: StringQueryOperatorInput, tableOfContents: StringQueryOperatorInput, timeToRead: IntQueryOperatorInput, wordCount: MarkdownWordCountFilterInput): MarkdownRemark
   site(buildTime: DateQueryOperatorInput, children: NodeFilterListInput, graphqlTypegen: SiteGraphqlTypegenFilterInput, host: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, jsxRuntime: StringQueryOperatorInput, parent: NodeFilterInput, pathPrefix: StringQueryOperatorInput, polyfill: BooleanQueryOperatorInput, port: IntQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput, trailingSlash: StringQueryOperatorInput): Site
@@ -1715,8 +1724,8 @@ type Query {
   strapiBwAsset(bw_page: STRAPI_BW_PAGEFilterInput, childStrapiBwAssetValueTextnode: STRAPI_BW_ASSET_VALUE_TEXTNODEFilterInput, children: NodeFilterListInput, childrenStrapiBwAssetValueTextnode: STRAPI_BW_ASSET_VALUE_TEXTNODEFilterListInput, createdAt: DateQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, key: StringQueryOperatorInput, locale: StringQueryOperatorInput, localizations: STRAPI_BW_ASSETLocalizationsFilterInput, parent: NodeFilterInput, publishedAt: DateQueryOperatorInput, strapi_id: IntQueryOperatorInput, updatedAt: DateQueryOperatorInput, value: STRAPI_BW_ASSETValueFilterInput): STRAPI_BW_ASSET
   strapiBwAssetValueTextnode(childMarkdownRemark: MarkdownRemarkFilterInput, children: NodeFilterListInput, childrenMarkdownRemark: MarkdownRemarkFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, value: StringQueryOperatorInput): STRAPI_BW_ASSET_VALUE_TEXTNODE
   strapiBwImage(brand: StringQueryOperatorInput, bw_page: STRAPI_BW_PAGEFilterInput, car_image: STRAPI__MEDIAFilterInput, children: NodeFilterListInput, color: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, key: StringQueryOperatorInput, locale: StringQueryOperatorInput, localizations: STRAPI_BW_IMAGELocalizationsFilterInput, model: StringQueryOperatorInput, parent: NodeFilterInput, price: IntQueryOperatorInput, publishedAt: DateQueryOperatorInput, strapi_id: IntQueryOperatorInput, updatedAt: DateQueryOperatorInput): STRAPI_BW_IMAGE
-  strapiBwPage(bw_assets: STRAPI_BW_ASSETFilterListInput, bw_images: STRAPI_BW_IMAGEFilterListInput, children: NodeFilterListInput, createdAt: DateQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, locale: StringQueryOperatorInput, localizations: STRAPI_BW_PAGELocalizationsFilterInput, parent: NodeFilterInput, publishedAt: DateQueryOperatorInput, strapi_id: IntQueryOperatorInput, tite: StringQueryOperatorInput, updatedAt: DateQueryOperatorInput, uri: StringQueryOperatorInput): STRAPI_BW_PAGE
-  strapiMedia(alternativeText: StringQueryOperatorInput, caption: StringQueryOperatorInput, children: NodeFilterListInput, createdAt: DateQueryOperatorInput, ext: StringQueryOperatorInput, formats: STRAPI__MEDIAFormatsFilterInput, hash: StringQueryOperatorInput, height: IntQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, mime: StringQueryOperatorInput, name: StringQueryOperatorInput, parent: NodeFilterInput, size: FloatQueryOperatorInput, strapi_id: IntQueryOperatorInput, updatedAt: DateQueryOperatorInput, url: StringQueryOperatorInput, width: IntQueryOperatorInput): STRAPI__MEDIA
+  strapiBwPage(bw_assets: STRAPI_BW_ASSETFilterListInput, bw_images: STRAPI_BW_IMAGEFilterListInput, children: NodeFilterListInput, createdAt: DateQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, locale: StringQueryOperatorInput, parent: NodeFilterInput, publishedAt: DateQueryOperatorInput, strapi_id: IntQueryOperatorInput, tite: StringQueryOperatorInput, updatedAt: DateQueryOperatorInput, uri: StringQueryOperatorInput): STRAPI_BW_PAGE
+  strapiMedia(alternativeText: StringQueryOperatorInput, caption: StringQueryOperatorInput, children: NodeFilterListInput, createdAt: DateQueryOperatorInput, ext: StringQueryOperatorInput, formats: STRAPI__MEDIAFormatsFilterInput, hash: StringQueryOperatorInput, height: IntQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, localFile: FileFilterInput, mime: StringQueryOperatorInput, name: StringQueryOperatorInput, parent: NodeFilterInput, size: FloatQueryOperatorInput, strapi_id: IntQueryOperatorInput, updatedAt: DateQueryOperatorInput, url: StringQueryOperatorInput, width: IntQueryOperatorInput): STRAPI__MEDIA
 }
 
 type STRAPI_BW_ASSET implements Node {
@@ -1920,8 +1929,6 @@ enum STRAPI_BW_ASSETFieldsEnum {
   bw_page___internal___owner
   bw_page___internal___type
   bw_page___locale
-  bw_page___localizations___data
-  bw_page___localizations___data___id
   bw_page___parent___children
   bw_page___parent___children___children
   bw_page___parent___children___id
@@ -2894,8 +2901,6 @@ enum STRAPI_BW_IMAGEFieldsEnum {
   bw_page___internal___owner
   bw_page___internal___type
   bw_page___locale
-  bw_page___localizations___data
-  bw_page___localizations___data___id
   bw_page___parent___children
   bw_page___parent___children___children
   bw_page___parent___children___id
@@ -2980,6 +2985,62 @@ enum STRAPI_BW_IMAGEFieldsEnum {
   car_image___internal___mediaType
   car_image___internal___owner
   car_image___internal___type
+  car_image___localFile___absolutePath
+  car_image___localFile___accessTime
+  car_image___localFile___atime
+  car_image___localFile___atimeMs
+  car_image___localFile___base
+  car_image___localFile___birthTime
+  car_image___localFile___birthtime
+  car_image___localFile___birthtimeMs
+  car_image___localFile___blksize
+  car_image___localFile___blocks
+  car_image___localFile___changeTime
+  car_image___localFile___childImageSharp___children
+  car_image___localFile___childImageSharp___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  car_image___localFile___childImageSharp___id
+  car_image___localFile___children
+  car_image___localFile___childrenImageSharp
+  car_image___localFile___childrenImageSharp___children
+  car_image___localFile___childrenImageSharp___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  car_image___localFile___childrenImageSharp___id
+  car_image___localFile___children___children
+  car_image___localFile___children___id
+  car_image___localFile___ctime
+  car_image___localFile___ctimeMs
+  car_image___localFile___dev
+  car_image___localFile___dir
+  car_image___localFile___ext
+  car_image___localFile___extension
+  car_image___localFile___gid
+  car_image___localFile___id
+  car_image___localFile___ino
+  car_image___localFile___internal___content
+  car_image___localFile___internal___contentDigest
+  car_image___localFile___internal___contentFilePath
+  car_image___localFile___internal___description
+  car_image___localFile___internal___fieldOwners
+  car_image___localFile___internal___ignoreType
+  car_image___localFile___internal___mediaType
+  car_image___localFile___internal___owner
+  car_image___localFile___internal___type
+  car_image___localFile___mode
+  car_image___localFile___modifiedTime
+  car_image___localFile___mtime
+  car_image___localFile___mtimeMs
+  car_image___localFile___name
+  car_image___localFile___nlink
+  car_image___localFile___parent___children
+  car_image___localFile___parent___id
+  car_image___localFile___prettySize
+  car_image___localFile___rdev
+  car_image___localFile___relativeDirectory
+  car_image___localFile___relativePath
+  car_image___localFile___root
+  car_image___localFile___size
+  car_image___localFile___sourceInstanceName
+  car_image___localFile___uid
+  car_image___localFile___url
   car_image___mime
   car_image___name
   car_image___parent___children
@@ -3062,7 +3123,6 @@ enum STRAPI_BW_IMAGEFieldsEnum {
   localizations___data___attributes___brand
   localizations___data___attributes___color
   localizations___data___attributes___createdAt
-  localizations___data___attributes___key
   localizations___data___attributes___locale
   localizations___data___attributes___model
   localizations___data___attributes___price
@@ -3180,7 +3240,6 @@ type STRAPI_BW_IMAGELocalizationsDataAttributes {
     # Configures the locale Moment.js will use to format the date.
     locale: String
   ): Date
-  key: String
   locale: String
   model: String
   price: Int
@@ -3216,7 +3275,6 @@ input STRAPI_BW_IMAGELocalizationsDataAttributesFilterInput {
   brand: StringQueryOperatorInput
   color: StringQueryOperatorInput
   createdAt: DateQueryOperatorInput
-  key: StringQueryOperatorInput
   locale: StringQueryOperatorInput
   model: StringQueryOperatorInput
   price: IntQueryOperatorInput
@@ -3262,7 +3320,6 @@ type STRAPI_BW_PAGE implements Node {
   id: ID!
   internal: Internal!
   locale: String
-  localizations: STRAPI_BW_PAGELocalizations
   parent: Node
   publishedAt(
     # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
@@ -3353,7 +3410,6 @@ enum STRAPI_BW_PAGEFieldsEnum {
   bw_assets___bw_page___internal___owner
   bw_assets___bw_page___internal___type
   bw_assets___bw_page___locale
-  bw_assets___bw_page___localizations___data
   bw_assets___bw_page___parent___children
   bw_assets___bw_page___parent___id
   bw_assets___bw_page___publishedAt
@@ -3529,7 +3585,6 @@ enum STRAPI_BW_PAGEFieldsEnum {
   bw_images___bw_page___internal___owner
   bw_images___bw_page___internal___type
   bw_images___bw_page___locale
-  bw_images___bw_page___localizations___data
   bw_images___bw_page___parent___children
   bw_images___bw_page___parent___id
   bw_images___bw_page___publishedAt
@@ -3556,6 +3611,43 @@ enum STRAPI_BW_PAGEFieldsEnum {
   bw_images___car_image___internal___mediaType
   bw_images___car_image___internal___owner
   bw_images___car_image___internal___type
+  bw_images___car_image___localFile___absolutePath
+  bw_images___car_image___localFile___accessTime
+  bw_images___car_image___localFile___atime
+  bw_images___car_image___localFile___atimeMs
+  bw_images___car_image___localFile___base
+  bw_images___car_image___localFile___birthTime
+  bw_images___car_image___localFile___birthtime
+  bw_images___car_image___localFile___birthtimeMs
+  bw_images___car_image___localFile___blksize
+  bw_images___car_image___localFile___blocks
+  bw_images___car_image___localFile___changeTime
+  bw_images___car_image___localFile___children
+  bw_images___car_image___localFile___childrenImageSharp
+  bw_images___car_image___localFile___ctime
+  bw_images___car_image___localFile___ctimeMs
+  bw_images___car_image___localFile___dev
+  bw_images___car_image___localFile___dir
+  bw_images___car_image___localFile___ext
+  bw_images___car_image___localFile___extension
+  bw_images___car_image___localFile___gid
+  bw_images___car_image___localFile___id
+  bw_images___car_image___localFile___ino
+  bw_images___car_image___localFile___mode
+  bw_images___car_image___localFile___modifiedTime
+  bw_images___car_image___localFile___mtime
+  bw_images___car_image___localFile___mtimeMs
+  bw_images___car_image___localFile___name
+  bw_images___car_image___localFile___nlink
+  bw_images___car_image___localFile___prettySize
+  bw_images___car_image___localFile___rdev
+  bw_images___car_image___localFile___relativeDirectory
+  bw_images___car_image___localFile___relativePath
+  bw_images___car_image___localFile___root
+  bw_images___car_image___localFile___size
+  bw_images___car_image___localFile___sourceInstanceName
+  bw_images___car_image___localFile___uid
+  bw_images___car_image___localFile___url
   bw_images___car_image___mime
   bw_images___car_image___name
   bw_images___car_image___parent___children
@@ -3671,14 +3763,6 @@ enum STRAPI_BW_PAGEFieldsEnum {
   internal___owner
   internal___type
   locale
-  localizations___data
-  localizations___data___attributes___createdAt
-  localizations___data___attributes___locale
-  localizations___data___attributes___publishedAt
-  localizations___data___attributes___tite
-  localizations___data___attributes___updatedAt
-  localizations___data___attributes___uri
-  localizations___data___id
   parent___children
   parent___children___children
   parent___children___children___children
@@ -3735,7 +3819,6 @@ input STRAPI_BW_PAGEFilterInput {
   id: StringQueryOperatorInput
   internal: InternalFilterInput
   locale: StringQueryOperatorInput
-  localizations: STRAPI_BW_PAGELocalizationsFilterInput
   parent: NodeFilterInput
   publishedAt: DateQueryOperatorInput
   strapi_id: IntQueryOperatorInput
@@ -3756,82 +3839,6 @@ type STRAPI_BW_PAGEGroupConnection {
   pageInfo: PageInfo!
   sum(field: STRAPI_BW_PAGEFieldsEnum!): Float
   totalCount: Int!
-}
-
-type STRAPI_BW_PAGELocalizations {
-  data: [STRAPI_BW_PAGELocalizationsData]
-}
-
-type STRAPI_BW_PAGELocalizationsData {
-  attributes: STRAPI_BW_PAGELocalizationsDataAttributes
-  id: Int
-}
-
-type STRAPI_BW_PAGELocalizationsDataAttributes {
-  createdAt(
-    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
-    difference: String
-
-    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
-    formatString: String
-
-    # Returns a string generated with Moment.js' `fromNow` function
-    fromNow: Boolean
-
-    # Configures the locale Moment.js will use to format the date.
-    locale: String
-  ): Date
-  locale: String
-  publishedAt(
-    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
-    difference: String
-
-    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
-    formatString: String
-
-    # Returns a string generated with Moment.js' `fromNow` function
-    fromNow: Boolean
-
-    # Configures the locale Moment.js will use to format the date.
-    locale: String
-  ): Date
-  tite: String
-  updatedAt(
-    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
-    difference: String
-
-    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
-    formatString: String
-
-    # Returns a string generated with Moment.js' `fromNow` function
-    fromNow: Boolean
-
-    # Configures the locale Moment.js will use to format the date.
-    locale: String
-  ): Date
-  uri: String
-}
-
-input STRAPI_BW_PAGELocalizationsDataAttributesFilterInput {
-  createdAt: DateQueryOperatorInput
-  locale: StringQueryOperatorInput
-  publishedAt: DateQueryOperatorInput
-  tite: StringQueryOperatorInput
-  updatedAt: DateQueryOperatorInput
-  uri: StringQueryOperatorInput
-}
-
-input STRAPI_BW_PAGELocalizationsDataFilterInput {
-  attributes: STRAPI_BW_PAGELocalizationsDataAttributesFilterInput
-  id: IntQueryOperatorInput
-}
-
-input STRAPI_BW_PAGELocalizationsDataFilterListInput {
-  elemMatch: STRAPI_BW_PAGELocalizationsDataFilterInput
-}
-
-input STRAPI_BW_PAGELocalizationsFilterInput {
-  data: STRAPI_BW_PAGELocalizationsDataFilterListInput
 }
 
 input STRAPI_BW_PAGESortInput {
@@ -3862,6 +3869,7 @@ type STRAPI__MEDIA implements Node {
   height: Int
   id: ID!
   internal: Internal!
+  localFile: File
   mime: String
   name: String
   parent: Node
@@ -3993,6 +4001,176 @@ enum STRAPI__MEDIAFieldsEnum {
   internal___mediaType
   internal___owner
   internal___type
+  localFile___absolutePath
+  localFile___accessTime
+  localFile___atime
+  localFile___atimeMs
+  localFile___base
+  localFile___birthTime
+  localFile___birthtime
+  localFile___birthtimeMs
+  localFile___blksize
+  localFile___blocks
+  localFile___changeTime
+  localFile___childImageSharp___children
+  localFile___childImageSharp___children___children
+  localFile___childImageSharp___children___id
+  localFile___childImageSharp___fixed___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___originalName @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fixed___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___originalImg @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___originalName @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___presentationHeight @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___presentationWidth @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___sizes @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___fluid___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___id
+  localFile___childImageSharp___internal___content
+  localFile___childImageSharp___internal___contentDigest
+  localFile___childImageSharp___internal___contentFilePath
+  localFile___childImageSharp___internal___description
+  localFile___childImageSharp___internal___fieldOwners
+  localFile___childImageSharp___internal___ignoreType
+  localFile___childImageSharp___internal___mediaType
+  localFile___childImageSharp___internal___owner
+  localFile___childImageSharp___internal___type
+  localFile___childImageSharp___original___height
+  localFile___childImageSharp___original___src
+  localFile___childImageSharp___original___width
+  localFile___childImageSharp___parent___children
+  localFile___childImageSharp___parent___id
+  localFile___childImageSharp___resize___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___resize___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___resize___originalName @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___resize___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___resize___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childImageSharp___resize___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___children
+  localFile___childrenImageSharp
+  localFile___childrenImageSharp___children
+  localFile___childrenImageSharp___children___children
+  localFile___childrenImageSharp___children___id
+  localFile___childrenImageSharp___fixed___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___originalName @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fixed___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___originalImg @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___originalName @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___presentationHeight @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___presentationWidth @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___sizes @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___fluid___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___id
+  localFile___childrenImageSharp___internal___content
+  localFile___childrenImageSharp___internal___contentDigest
+  localFile___childrenImageSharp___internal___contentFilePath
+  localFile___childrenImageSharp___internal___description
+  localFile___childrenImageSharp___internal___fieldOwners
+  localFile___childrenImageSharp___internal___ignoreType
+  localFile___childrenImageSharp___internal___mediaType
+  localFile___childrenImageSharp___internal___owner
+  localFile___childrenImageSharp___internal___type
+  localFile___childrenImageSharp___original___height
+  localFile___childrenImageSharp___original___src
+  localFile___childrenImageSharp___original___width
+  localFile___childrenImageSharp___parent___children
+  localFile___childrenImageSharp___parent___id
+  localFile___childrenImageSharp___resize___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___resize___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___resize___originalName @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___resize___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___resize___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___childrenImageSharp___resize___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  localFile___children___children
+  localFile___children___children___children
+  localFile___children___children___id
+  localFile___children___id
+  localFile___children___internal___content
+  localFile___children___internal___contentDigest
+  localFile___children___internal___contentFilePath
+  localFile___children___internal___description
+  localFile___children___internal___fieldOwners
+  localFile___children___internal___ignoreType
+  localFile___children___internal___mediaType
+  localFile___children___internal___owner
+  localFile___children___internal___type
+  localFile___children___parent___children
+  localFile___children___parent___id
+  localFile___ctime
+  localFile___ctimeMs
+  localFile___dev
+  localFile___dir
+  localFile___ext
+  localFile___extension
+  localFile___gid
+  localFile___id
+  localFile___ino
+  localFile___internal___content
+  localFile___internal___contentDigest
+  localFile___internal___contentFilePath
+  localFile___internal___description
+  localFile___internal___fieldOwners
+  localFile___internal___ignoreType
+  localFile___internal___mediaType
+  localFile___internal___owner
+  localFile___internal___type
+  localFile___mode
+  localFile___modifiedTime
+  localFile___mtime
+  localFile___mtimeMs
+  localFile___name
+  localFile___nlink
+  localFile___parent___children
+  localFile___parent___children___children
+  localFile___parent___children___id
+  localFile___parent___id
+  localFile___parent___internal___content
+  localFile___parent___internal___contentDigest
+  localFile___parent___internal___contentFilePath
+  localFile___parent___internal___description
+  localFile___parent___internal___fieldOwners
+  localFile___parent___internal___ignoreType
+  localFile___parent___internal___mediaType
+  localFile___parent___internal___owner
+  localFile___parent___internal___type
+  localFile___parent___parent___children
+  localFile___parent___parent___id
+  localFile___prettySize
+  localFile___rdev
+  localFile___relativeDirectory
+  localFile___relativePath
+  localFile___root
+  localFile___size
+  localFile___sourceInstanceName
+  localFile___uid
+  localFile___url
   mime
   name
   parent___children
@@ -4054,6 +4232,7 @@ input STRAPI__MEDIAFilterInput {
   height: IntQueryOperatorInput
   id: StringQueryOperatorInput
   internal: InternalFilterInput
+  localFile: FileFilterInput
   mime: StringQueryOperatorInput
   name: StringQueryOperatorInput
   parent: NodeFilterInput
