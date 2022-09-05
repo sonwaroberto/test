@@ -1,4 +1,9 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react'
+import React, {
+  SyntheticEvent,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react'
 import { useThemeContext } from '../utils/dataContext'
 import { graphql, useStaticQuery } from 'gatsby'
 import Img, { FluidObject } from 'gatsby-image'
@@ -171,7 +176,7 @@ export default function EstimationCar() {
   useEffect(() => {
     setNumberDays(dayOutTown + dayTown)
   }, [dayOutTown, dayTown])
-  useEffect(() => {
+  useLayoutEffect(() => {
     setNumberDays(1)
   }, [])
   useEffect(() => {
