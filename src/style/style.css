@@ -185,7 +185,7 @@ img {
   margin-left: 14px;
 }
 
-.btn-nav_reserver :hover{
+.btn-nav_reserver :hover {
   color: #fff !important;
-  background-color: rgba(96, 105, 123,.5);
+  background-color: rgba(96, 105, 123, 0.5);
 }
